@@ -67,15 +67,19 @@ trait CanJoinTeams
      */
     public function currentTeam()
     {
-        if (is_null($this->current_team_id) && $this->hasTeams()) {
+        if (! $this->hasTeams()) {
+            return null;
+        }
+
+        if (is_null($this->current_team_id)) {
             $this->switchToTeam($this->teams->first());
 
             return $this->currentTeam();
-        } elseif (! is_null($this->current_team_id)) {
-            $currentTeam = $this->teams->find($this->current_team_id);
-
-            return $currentTeam ?: $this->refreshCurrentTeam();
         }
+
+        $currentTeam = $this->teams->find($this->current_team_id);
+
+        return $currentTeam ?: $this->refreshCurrentTeam();
     }
 
     /**
