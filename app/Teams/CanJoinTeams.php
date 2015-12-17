@@ -142,4 +142,17 @@ trait CanJoinTeams
     {
         return $this->hasMany(Invitation::class);
     }
+
+    /**
+     * Switch the user's role on the current team.
+     *
+     * @param  string $role
+     * @return Laravel\Spark\Teams\Team
+     */
+    public function switchRoleInCurrentTeam($role)
+    {
+        $this->currentTeam()->pivot->role = $role;
+
+        return $this->refreshCurrentTeam();
+    }
 }
